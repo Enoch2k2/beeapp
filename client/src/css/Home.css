@@ -1,0 +1,13 @@
+#root > div > div > div > div > div.jumbotron {
+  background-color: rgba(11, 12, 9, 0.62);
+  color: white;
+}
+
+#root > div > div > div > div > div.jumbotron a {
+  color: aqua;
+  text-decoration: none;
+}
+
+#root > div > div > div > div > div.jumbotron a:hover {
+  color: rgba(18, 140, 112, 1);
+}
