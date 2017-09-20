@@ -1,20 +1,45 @@
 import React, {Component} from 'react';
-import {Grid, Row, Col, PageHeader, Form, FormGroup, FormControl, Checkbox, Button, ControlLabel} from 'react-bootstrap';
+import {Grid, Row, Col, PageHeader, FormGroup, Button, ControlLabel} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {signUp} from '../actions';
+import 'node-fetch';
 import '../css/LogIn.css';
-export default class SignUp extends Component {
+class SignUp extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  handleChange = e => {
+    const {name, value} = e.target;
+    this.setState({
+      [name]: value
+    })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.signUp(this.state);
+  }
+
   render(){
     return(
       <Grid>
         <Row>
           <Col lg={8} md={8} sm={8} lgOffset={2} mdOffset={2} smOffset={2} className="white">
             <PageHeader>Sign Up</PageHeader>
-            <Form horizontal>
+            <form className='form-horizontal' onSubmit={this.handleSubmit}>
               <FormGroup controlId="formHorizontalEmail">
                 <Col componentClass={ControlLabel} sm={2}>
                   Email
                 </Col>
                 <Col sm={10}>
-                  <FormControl type="email" placeholder="Email" />
+                  <input className='form-control' value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Email" id="formHorizontalEmail" />
                 </Col>
               </FormGroup>
 
@@ -23,13 +48,7 @@ export default class SignUp extends Component {
                   Password
                 </Col>
                 <Col sm={10}>
-                  <FormControl type="password" placeholder="Password" />
-                </Col>
-              </FormGroup>
-
-              <FormGroup>
-                <Col smOffset={2} sm={10}>
-                  <Checkbox>Remember me</Checkbox>
+                  <input className='form-control' value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" id="formHorizontalPassword" />
                 </Col>
               </FormGroup>
 
@@ -40,10 +59,22 @@ export default class SignUp extends Component {
                   </Button>
                 </Col>
               </FormGroup>
-            </Form>
+            </form>
           </Col>
         </Row>
       </Grid>
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    session: state.sessions
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({signUp}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

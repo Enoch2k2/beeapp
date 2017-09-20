@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, Jumbotron} from 'react-bootstrap';
-import { BrowserRouter as Router, NavLink} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import '../css/Home.css';
-export default class Home extends Component {
+class Home extends Component {
   render(){
     return (
       <Grid>
@@ -20,3 +21,11 @@ export default class Home extends Component {
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    user: state.session.user
+  }
+}
+
+export default connect(mapStateToProps)(Home);

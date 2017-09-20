@@ -1,7 +1,7 @@
 import React from 'react';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
-import { BrowserRouter as Router, NavLink} from 'react-router-dom';
-import Home from '../containers/Home'
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import '../css/NavBar.css'
 const Navigation = (props) => {
   return (
@@ -15,18 +15,23 @@ const Navigation = (props) => {
       <Navbar.Collapse>
         <Nav pullRight>
         <NavItem><NavLink to="#">Shop</NavLink></NavItem>
-        { false ? <NavDropdown eventKey={3} title="Username" id="basic-nav-dropdown">
+        { props.signedIn ? <NavDropdown eventKey={3} title="Username" id="basic-nav-dropdown">
           <MenuItem eventKey={3.1}>Profile</MenuItem>
           <MenuItem eventKey={3.2}>Settings</MenuItem>
           <MenuItem eventKey={3.3}>Node List</MenuItem>
           <MenuItem divider />
           <MenuItem eventKey={3.3}>Log Out</MenuItem>
         </NavDropdown> : null}
-        { true ? <NavItem><NavLink to="signup">Sign Up</NavLink></NavItem> : null }
-        { true ? <NavItem><NavLink to="login">Log In</NavLink></NavItem> : null }
+        { !props.signedIn ? <NavItem><NavLink to="signup">Sign Up</NavLink></NavItem> : null }
+        { !props.signedIn ? <NavItem><NavLink to="login">Log In</NavLink></NavItem> : null }
         </Nav>
       </Navbar.Collapse>
     </Navbar>
 )};
 
-export default Navigation;
+function mapStateToProps(state){
+  return {
+    session: state.session
+  }
+}
+export default connect(mapStateToProps)(Navigation);

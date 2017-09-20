@@ -1,20 +1,43 @@
 import React, {Component} from 'react';
-import {Grid, Row, Col, PageHeader, Form, FormGroup, FormControl, Checkbox, Button, ControlLabel} from 'react-bootstrap';
+import {Grid, Row, Col, PageHeader, FormGroup, Button, ControlLabel} from 'react-bootstrap';
+import {connect} from 'react-redux';
 import '../css/LogIn.css';
-export default class LogIn extends Component {
+class LogIn extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  handleChange = e => {
+    const {name, value} = e.target;
+    this.setState({
+      [name]: value
+    })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log(`email: ${this.state.email}`);
+    console.log(`password: ${this.state.password}`);
+  }
+
   render(){
     return(
       <Grid>
         <Row>
           <Col lg={8} md={8} sm={8} lgOffset={2} mdOffset={2} smOffset={2} className="white">
             <PageHeader>Log In</PageHeader>
-            <Form horizontal>
+            <form className='form-horizontal' onSubmit={this.handleSubmit}>
               <FormGroup controlId="formHorizontalEmail">
                 <Col componentClass={ControlLabel} sm={2}>
                   Email
                 </Col>
                 <Col sm={10}>
-                  <FormControl type="email" placeholder="Email" />
+                  <input className='form-control' value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Email" id="formHorizontalEmail" />
                 </Col>
               </FormGroup>
 
@@ -23,13 +46,7 @@ export default class LogIn extends Component {
                   Password
                 </Col>
                 <Col sm={10}>
-                  <FormControl type="password" placeholder="Password" />
-                </Col>
-              </FormGroup>
-
-              <FormGroup>
-                <Col smOffset={2} sm={10}>
-                  <Checkbox>Remember me</Checkbox>
+                  <input className='form-control' value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" id="formHorizontalPassword" />
                 </Col>
               </FormGroup>
 
@@ -40,10 +57,18 @@ export default class LogIn extends Component {
                   </Button>
                 </Col>
               </FormGroup>
-            </Form>
+            </form>
           </Col>
         </Row>
       </Grid>
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    session: state.sessions
+  }
+}
+
+export default connect(mapStateToProps)(LogIn);
